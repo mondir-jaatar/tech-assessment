@@ -1,0 +1,15 @@
+﻿using System.ComponentModel.DataAnnotations;
+using WeChooz.TechAssessment.Domain.Entities;
+
+namespace WeChooz.TechAssessment.Domain.Common;
+
+public abstract class AuditableBaseEntity : BaseEntity
+{
+    public Guid? CreatedBy { get; set; }
+    
+    public DateTime Created { get; set; }
+    
+    public Guid? LastModifiedBy { get; set; }
+    
+    public DateTime? LastModified { get; set; }
+}

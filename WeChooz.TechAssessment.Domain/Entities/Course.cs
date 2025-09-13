@@ -3,7 +3,7 @@ using WeChooz.TechAssessment.Domain.Enums;
 
 namespace WeChooz.TechAssessment.Domain.Entities;
 
-public class Course : DeletableBaseEntityWithId
+public class Course : SolftDeletableBaseEntityWithId
 {
     public string Name { get; set; }
 

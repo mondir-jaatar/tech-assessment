@@ -41,11 +41,5 @@ public class CourseConfiguration : IEntityTypeConfiguration<Course>
             .WithMany()
             .HasForeignKey(p => p.TrainerId)
             .OnDelete(DeleteBehavior.SetNull);
-        
-        builder.ToTable(t =>
-        {
-            t.HasCheckConstraint("CK_Course_Duration_Min", "[Duration] >= 1");
-            t.HasCheckConstraint("CK_Course_MaxCapacity_Min", "[MaxCapacity] >= 1");
-        });
     }
 }

@@ -1,6 +1,6 @@
 namespace WeChooz.TechAssessment.Domain.Common;
 
-public abstract class DeletableBaseEntityWithId : AuditableBaseEntityWithId
+public abstract class SolftDeletableBaseEntityWithId : AuditableBaseEntityWithId
 {
     public bool IsDeleted { get; set; }
     

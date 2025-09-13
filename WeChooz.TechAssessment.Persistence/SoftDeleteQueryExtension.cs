@@ -14,10 +14,10 @@ public static class SoftDeleteQueryExtension
             .MakeGenericMethod(entityData.ClrType);
         var filter = methodToCall.Invoke(null, new object[] { });
         entityData.SetQueryFilter((LambdaExpression)filter);
-        entityData.AddIndex(entityData.FindProperty(nameof(DeletableBaseEntityWithId.IsDeleted)));
+        entityData.AddIndex(entityData.FindProperty(nameof(SolftDeletableBaseEntityWithId.IsDeleted)));
     }
 
-    private static LambdaExpression GetSoftDeleteFilter<TEntity>() where TEntity : DeletableBaseEntityWithId
+    private static LambdaExpression GetSoftDeleteFilter<TEntity>() where TEntity : SolftDeletableBaseEntityWithId
     {
         Expression<Func<TEntity, bool>> filter = x => !x.IsDeleted;
         return filter;

@@ -5,7 +5,7 @@ using WeChooz.TechAssessment.Domain.Entities;
 
 namespace WeChooz.TechAssessment.Persistence;
 
-public class FormationDbContext(IDateTimeService dateTimeService, IAuthenticatedUserService authenticatedUserService) : DbContext
+public class CourseDbContext(IDateTimeService dateTimeService, IAuthenticatedUserService authenticatedUserService) : DbContext
 {
     public DbSet<Trainer> Trainers { get; set; }
     
@@ -28,7 +28,7 @@ public class FormationDbContext(IDateTimeService dateTimeService, IAuthenticated
                     entry.Entity.LastModifiedBy = authenticatedUserService.UserId;
                     break;
                 case EntityState.Deleted:
-                    if (entry.Entity is DeletableBaseEntityWithId entity)
+                    if (entry.Entity is SolftDeletableBaseEntityWithId entity)
                     {
                         entry.State = EntityState.Modified;
                         entity.IsDeleted = true;
@@ -80,7 +80,7 @@ public class FormationDbContext(IDateTimeService dateTimeService, IAuthenticated
     private static void ConfigureSoftDelete(ModelBuilder builder)
     {
         var deletableTypes = builder.Model.GetEntityTypes()
-            .Where(e => typeof(DeletableBaseEntityWithId).IsAssignableFrom(e.ClrType));
+            .Where(e => typeof(SolftDeletableBaseEntityWithId).IsAssignableFrom(e.ClrType));
 
         foreach (var entityType in deletableTypes)
         {

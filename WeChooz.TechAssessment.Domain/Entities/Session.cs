@@ -3,7 +3,7 @@ using WeChooz.TechAssessment.Domain.Enums;
 
 namespace WeChooz.TechAssessment.Domain.Entities;
 
-public class Session : AuditableBaseEntityWithId
+public class Session : SolftDeletableBaseEntityWithId, IVersionedEntity
 {
     public DateTime StartDate { get; set; }
     
@@ -12,4 +12,6 @@ public class Session : AuditableBaseEntityWithId
     public virtual Course Course { get; set; }
 
     public Guid CourseId { get; set; }
+    
+    public byte[] RowVersion { get; set; }
 }

@@ -1,6 +1,10 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Razor;
 using Vite.AspNetCore;
+using WeChooz.TechAssessment.Application;
+using WeChooz.TechAssessment.Persistence;
+using WeChooz.TechAssessment.Persistence.Shared;
+using WeChooz.TechAssessment.Web;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -39,6 +43,10 @@ builder.Services.AddViteServices(options =>
     options.Server.UseReactRefresh = true;
     options.Manifest = "vite.manifest.json";
 });
+
+builder.Services.AddApplicationLayer();
+builder.Services.AddSharedInfrastructure();
+builder.Services.AddPersistenceInfrastructure(builder.Configuration);
 
 var app = builder.Build();
 

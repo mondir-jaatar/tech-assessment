@@ -4,7 +4,7 @@ using WeChooz.TechAssessment.Application.Interfaces;
 
 namespace WeChooz.TechAssessment.Persistence;
 
-public class UnitOfWork<TContext>(TContext context) : IUnitOfWork, IDisposable where TContext : DbContext
+public class UnitOfWork(CourseDbContext context) : IUnitOfWork, IDisposable
 {
     public IDbContextTransaction Transaction;
 

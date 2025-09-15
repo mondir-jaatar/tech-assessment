@@ -1,18 +1,17 @@
-using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
-using Microsoft.Extensions.Logging;
 using OpenTelemetry;
 using OpenTelemetry.Metrics;
 using OpenTelemetry.Trace;
+using WeChooz.TechAssessment.Application.Interfaces.Services;
+using WeChooz.TechAssessment.Web.Services;
 
-namespace Microsoft.Extensions.Hosting;
+namespace WeChooz.TechAssessment.Web;
 
 // Adds common .NET Aspire services: service discovery, resilience, health checks, and OpenTelemetry.
 // This project should be referenced by each service project in your solution.
 // To learn more about using this project, see https://aka.ms/dotnet/aspire/service-defaults
-public static class Extensions
+public static class ServiceExtensions
 {
     public static TBuilder AddServiceDefaults<TBuilder>(this TBuilder builder) where TBuilder : IHostApplicationBuilder
     {
@@ -38,6 +37,8 @@ public static class Extensions
         // {
         //     options.AllowedSchemes = ["https"];
         // });
+        
+        builder.Services.AddScoped<IAuthenticatedUserService, AuthenticatedUserService>();
 
         return builder;
     }

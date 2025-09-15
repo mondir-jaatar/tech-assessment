@@ -4,8 +4,6 @@ VisualStudioVersion = 17.14.36121.58
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WeChooz.TechAssessment.AppHost", "WeChooz.TechAssessment.AppHost\WeChooz.TechAssessment.AppHost.csproj", "{423B036F-0CF7-4592-9C20-7C98A7359F57}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WeChooz.TechAssessment.ServiceDefaults", "WeChooz.TechAssessment.ServiceDefaults\WeChooz.TechAssessment.ServiceDefaults.csproj", "{3EB90BD3-1B44-4C8D-74BC-648921A0D3E9}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WeChooz.TechAssessment.Web", "WeChooz.TechAssessment.Web\WeChooz.TechAssessment.Web.csproj", "{6599BCA9-F581-7F52-41FF-F88CADB6C498}"
 EndProject
 Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "WeChooz.TechAssessment.Database.SqlServer", "WeChooz.TechAssessment.Database.SqlServer\WeChooz.TechAssessment.Database.SqlServer.sqlproj", "{D648D1E8-5234-423D-AC14-7BB062DAA09E}"
@@ -39,10 +37,6 @@ Global
 		{423B036F-0CF7-4592-9C20-7C98A7359F57}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{423B036F-0CF7-4592-9C20-7C98A7359F57}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{423B036F-0CF7-4592-9C20-7C98A7359F57}.Release|Any CPU.Build.0 = Release|Any CPU
-		{3EB90BD3-1B44-4C8D-74BC-648921A0D3E9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3EB90BD3-1B44-4C8D-74BC-648921A0D3E9}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3EB90BD3-1B44-4C8D-74BC-648921A0D3E9}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3EB90BD3-1B44-4C8D-74BC-648921A0D3E9}.Release|Any CPU.Build.0 = Release|Any CPU
 		{6599BCA9-F581-7F52-41FF-F88CADB6C498}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{6599BCA9-F581-7F52-41FF-F88CADB6C498}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6599BCA9-F581-7F52-41FF-F88CADB6C498}.Release|Any CPU.ActiveCfg = Release|Any CPU

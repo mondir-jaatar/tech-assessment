@@ -1,11 +1,12 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.Reflection;
+using Microsoft.EntityFrameworkCore;
 using WeChooz.TechAssessment.Application.Interfaces.Services;
 using WeChooz.TechAssessment.Domain.Common;
 using WeChooz.TechAssessment.Domain.Entities;
 
 namespace WeChooz.TechAssessment.Persistence;
 
-public class CourseDbContext(IDateTimeService dateTimeService, IAuthenticatedUserService authenticatedUserService) : DbContext
+public class CourseDbContext(DbContextOptions<CourseDbContext> options, IDateTimeService dateTimeService, IAuthenticatedUserService authenticatedUserService) : DbContext(options)
 {
     public DbSet<Trainer> Trainers { get; set; }
     
@@ -45,6 +46,8 @@ public class CourseDbContext(IDateTimeService dateTimeService, IAuthenticatedUse
     protected override void OnModelCreating(ModelBuilder builder)
     {
         base.OnModelCreating(builder);
+        
+        builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
 
         ConfigureDefaultIds(builder);
         ConfigureRowVersion(builder);
@@ -67,7 +70,7 @@ public class CourseDbContext(IDateTimeService dateTimeService, IAuthenticatedUse
     private static void ConfigureRowVersion(ModelBuilder builder)
     {
         var entityTypes = builder.Model.GetEntityTypes()
-            .Where(e => typeof(BaseEntity).IsAssignableFrom(e.ClrType));
+            .Where(e => typeof(IVersionedEntity).IsAssignableFrom(e.ClrType));
 
         foreach (var entityType in entityTypes)
         {

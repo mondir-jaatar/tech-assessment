@@ -45,7 +45,7 @@ builder.Services.AddViteServices(options =>
 });
 
 builder.Services.AddApplicationLayer();
-builder.Services.AddSharedInfrastructure();
+builder.Services.AddSharedInfrastructure(builder.Configuration);
 builder.Services.AddPersistenceInfrastructure(builder.Configuration);
 
 var app = builder.Build();
@@ -58,15 +58,27 @@ if (!app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseStaticFiles();
 
-app.UseAntiforgery();
-
-app.MapStaticAssets();
+app.Use(async (context, next) =>
+{
+    // Set the Content-Security-Policy header
+    context.Response.Headers.Add("Content-Security-Policy", "script-src 'self' https://localhost:5180 'unsafe-inline';");    await next();
+});
 
 app.UseRouting();
+app.UseCors(WeChooz.TechAssessment.Web.ServiceExtensions.AllowSpecificOrigins);
+app.UseAntiforgery();
+app.MapStaticAssets();
+app.MapControllers();
 app.MapDefaultEndpoints();
 
-app.MapControllers();
+if (app.Environment.IsDevelopment())
+{
+    app.UseWebSockets();
+    app.UseViteDevelopmentServer(true);
+}
+
 
 app.MapControllerRoute(
         name: "fallback_admin",
@@ -91,9 +103,4 @@ app.MapControllerRoute(
         defaults: new { controller = "Home", action = "Handle" }
     );
 
-if (app.Environment.IsDevelopment())
-{
-    app.UseWebSockets();
-    app.UseViteDevelopmentServer(true);
-}
 app.Run();

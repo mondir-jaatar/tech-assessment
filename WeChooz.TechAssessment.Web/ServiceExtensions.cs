@@ -13,6 +13,9 @@ namespace WeChooz.TechAssessment.Web;
 // To learn more about using this project, see https://aka.ms/dotnet/aspire/service-defaults
 public static class ServiceExtensions
 {
+    public const string AllowSpecificOrigins = "allowSpecificOrigins";
+    private static readonly string[] AllowedOrigins = new string[] { "https://localhost:5180" };
+    
     public static TBuilder AddServiceDefaults<TBuilder>(this TBuilder builder) where TBuilder : IHostApplicationBuilder
     {
         builder.ConfigureOpenTelemetry();
@@ -38,9 +41,27 @@ public static class ServiceExtensions
         //     options.AllowedSchemes = ["https"];
         // });
         
+        builder.Services.AddHttpContextAccessor();
+        
         builder.Services.AddScoped<IAuthenticatedUserService, AuthenticatedUserService>();
+        
+        AddCors(builder.Services);
 
         return builder;
+    }
+    
+    private static void AddCors(IServiceCollection services)
+    {
+        services.AddCors(options =>
+        {
+            options.AddPolicy(name: AllowSpecificOrigins, builder =>
+            {
+                builder.WithOrigins(AllowedOrigins)
+                    .AllowAnyHeader()
+                    .AllowAnyMethod()
+                    .AllowCredentials();
+            });
+        });
     }
 
     public static TBuilder ConfigureOpenTelemetry<TBuilder>(this TBuilder builder) where TBuilder : IHostApplicationBuilder

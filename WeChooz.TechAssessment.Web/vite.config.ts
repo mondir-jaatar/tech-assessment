@@ -53,8 +53,8 @@ export default defineConfig(async () => {
         plugins: [react(), viteTsconfigPaths({ loose: true })],
         clearScreen: true,
         appType: "custom",
-        root: path.resolve(__dirname, "ClientApp", "src"),
-        publicDir: path.resolve(__dirname, "ClientApp", "assets"),
+        root: path.resolve(__dirname, "ClientApp"),
+        publicDir: path.resolve(__dirname, "ClientApp", "public"),
         resolve: {
             alias: {
                 "@mantine/core": path.resolve(__dirname, "node_modules/@mantine/core"),
@@ -79,7 +79,7 @@ export default defineConfig(async () => {
             assetsDir: "",
             rollupOptions: {
                 input: {
-                    index: path.resolve(__dirname, "ClientApp", "src", "public", "index.tsx"),
+                    index: path.resolve(__dirname, "ClientApp", "src", "index.tsx"),
                     admin: path.resolve(__dirname, "ClientApp", "src", "admin", "index.tsx"),
                 },
                 output: {

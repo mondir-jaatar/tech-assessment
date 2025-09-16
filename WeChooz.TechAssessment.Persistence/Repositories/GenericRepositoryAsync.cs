@@ -7,7 +7,7 @@ using WeChooz.TechAssessment.Domain.Common;
 
 namespace WeChooz.TechAssessment.Persistence.Repositories;
 
-public abstract class GenericRepositoryAsync<TEntity> : IGenericRepositoryAsync<TEntity> where TEntity : AuditableBaseEntityWithId
+public class GenericRepositoryAsync<TEntity> : IGenericRepositoryAsync<TEntity> where TEntity : BaseEntity
 {
     private readonly CourseDbContext _dbContext;
     private readonly DbSet<TEntity> _dbSet;
@@ -16,16 +16,6 @@ public abstract class GenericRepositoryAsync<TEntity> : IGenericRepositoryAsync<
     {
         _dbContext = dbContext;
         _dbSet = _dbContext.Set<TEntity>();
-    }
-    
-    public async Task<TEntity?> GetByIdAsync(Guid id, bool trackChanges = false)
-    {
-        if (trackChanges)
-        {
-            return await _dbSet.FirstOrDefaultAsync(e => e.Id == id);
-        }
-
-        return await _dbSet.AsNoTracking().FirstOrDefaultAsync(e => e.Id == id);
     }
 
     public async Task<TEntity> AddAsync(TEntity entity, CancellationToken cancellationToken = default)

@@ -5,7 +5,6 @@ namespace WeChooz.TechAssessment.Application.Interfaces.Repositories;
 
 public interface IGenericRepositoryAsync<TEntity> where TEntity : class
 {
-    Task<TEntity?> GetByIdAsync(Guid id, bool trackChanges = false);
     Task<TEntity> AddAsync(TEntity entity, CancellationToken cancellationToken = default);
     Task AddRangeAsync(IEnumerable<TEntity> entities, CancellationToken cancellationToken = default);
     void Update(TEntity entity);

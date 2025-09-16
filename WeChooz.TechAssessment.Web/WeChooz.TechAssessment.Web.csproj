@@ -36,6 +36,7 @@
     </ItemGroup>
 
     <ItemGroup>
+        <Folder Include="ClientApp\src\public\" />
         <Folder Include="wwwroot\"/>
     </ItemGroup>
 
@@ -43,7 +44,6 @@
         <TypeScriptCompile Include="ClientApp\src\admin\index.tsx">
             <SubType>Code</SubType>
         </TypeScriptCompile>
-        <TypeScriptCompile Include="ClientApp\src\public\index.tsx"/>
     </ItemGroup>
 
     <ItemGroup>

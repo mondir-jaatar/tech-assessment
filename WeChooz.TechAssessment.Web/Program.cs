@@ -1,9 +1,11 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Razor;
+using Microsoft.EntityFrameworkCore;
 using Vite.AspNetCore;
 using WeChooz.TechAssessment.Application;
 using WeChooz.TechAssessment.Persistence;
-using WeChooz.TechAssessment.Persistence.Shared;
+using WeChooz.TechAssessment.Persistence.Seeds;
+using WeChooz.TechAssessment.Shared;
 using WeChooz.TechAssessment.Web;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -60,11 +62,11 @@ if (!app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
-app.Use(async (context, next) =>
-{
-    // Set the Content-Security-Policy header
-    context.Response.Headers.Add("Content-Security-Policy", "script-src 'self' https://localhost:5180 'unsafe-inline';");    await next();
-});
+// app.Use(async (context, next) =>
+// {
+//     // Set the Content-Security-Policy header
+//     context.Response.Headers.Add("Content-Security-Policy", "script-src 'self' https://localhost:5180 'unsafe-inline';");    await next();
+// });
 
 app.UseRouting();
 app.UseCors(WeChooz.TechAssessment.Web.ServiceExtensions.AllowSpecificOrigins);
@@ -102,5 +104,9 @@ app.MapControllerRoute(
         pattern: "",
         defaults: new { controller = "Home", action = "Handle" }
     );
+
+var scope = app.Services.CreateScope();
+var context = scope.ServiceProvider.GetRequiredService<CourseDbContext>();
+context.CreateDatabase();
 
 app.Run();

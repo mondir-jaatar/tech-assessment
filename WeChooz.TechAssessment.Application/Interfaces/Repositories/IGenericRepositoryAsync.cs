@@ -14,8 +14,9 @@ public interface IGenericRepositoryAsync<TEntity> where TEntity : class
     Task<bool> AnyAsync(Expression<Func<TEntity, bool>> predicate, CancellationToken cancellationToken = default);
     Task<bool> AllAsync(Expression<Func<TEntity, bool>> predicate, CancellationToken cancellationToken = default);
     Task<int> CountAsync(Expression<Func<TEntity, bool>>? predicate = null, CancellationToken cancellationToken = default);
+    Task<int> CountAsync(ISpecification<TEntity> spec, CancellationToken cancellationToken = default);
     void DeleteRangeAsync(IEnumerable<TEntity> entities);
     void DetachEntity(TEntity entity);
-    Task<List<TEntity>> GetBySpecification(ISpecification<TEntity> specification, CancellationToken cancellationToken = default);
+    Task<List<TResult>> GetBySpecificationAsync<TResult>(ISpecification<TEntity, TResult> specification, CancellationToken cancellationToken = default) where TResult : class; 
     Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
 }

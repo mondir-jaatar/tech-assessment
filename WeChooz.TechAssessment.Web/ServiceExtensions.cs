@@ -1,3 +1,4 @@
+using Asp.Versioning;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using OpenTelemetry;
@@ -46,6 +47,14 @@ public static class ServiceExtensions
         builder.Services.AddScoped<IAuthenticatedUserService, AuthenticatedUserService>();
         
         AddCors(builder.Services);
+        
+        builder.Services.AddApiVersioning(options =>
+        {
+            // Configure your versioning options here
+            options.AssumeDefaultVersionWhenUnspecified = true;
+            options.ReportApiVersions = true;
+            options.DefaultApiVersion = new ApiVersion(1, 0);
+        });
 
         return builder;
     }

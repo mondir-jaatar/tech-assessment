@@ -1,6 +1,6 @@
 ﻿using WeChooz.TechAssessment.Application.Interfaces.Services;
 
-namespace WeChooz.TechAssessment.Persistence.Shared;
+namespace WeChooz.TechAssessment.Shared;
 
 public class DateTimeService: IDateTimeService
 {

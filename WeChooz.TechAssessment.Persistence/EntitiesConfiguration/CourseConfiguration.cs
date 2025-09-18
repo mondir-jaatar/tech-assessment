@@ -29,11 +29,11 @@ public class CourseConfiguration : IEntityTypeConfiguration<Course>
             .IsRequired();
 
         // Audience
-        builder.Property(p => p.Audience)
+        builder.Property(p => p.TargetAudience)
             .HasConversion<string>();
         
         // MaxCapacity
-        builder.Property(p => p.MaxCapacity)
+        builder.Property(p => p.MaxParticipants)
             .IsRequired();
         
         // Trainer

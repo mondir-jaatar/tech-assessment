@@ -11,13 +11,13 @@ public class Course : SolftDeletableBaseEntityWithId, IVersionedEntity
     
     public int Duration { get; set; }
     
-    public TargetAudience Audience { get; set; }
+    public TargetAudience TargetAudience { get; set; }
     
-    public int MaxCapacity { get; set; }
+    public int MaxParticipants { get; set; }
     
     public virtual Trainer Trainer { get; set; }
 
-    public Guid TrainerId { get; set; }
+    public Guid? TrainerId { get; set; }
     
     public byte[] RowVersion { get; set; }
 }

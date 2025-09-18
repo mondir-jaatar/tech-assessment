@@ -4,7 +4,7 @@ using StackExchange.Redis;
 using WeChooz.TechAssessment.Application.Interfaces;
 using WeChooz.TechAssessment.Application.Interfaces.Services;
 
-namespace WeChooz.TechAssessment.Persistence.Shared;
+namespace WeChooz.TechAssessment.Shared;
 
 public static class ServiceExtensions
 {

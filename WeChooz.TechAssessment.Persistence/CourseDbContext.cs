@@ -10,9 +10,11 @@ public class CourseDbContext(DbContextOptions<CourseDbContext> options, IDateTim
 {
     public DbSet<Trainer> Trainers { get; set; }
     
-    public DbSet<Course> Course { get; set; }
+    public DbSet<Course> Courses { get; set; }
 
     public DbSet<Session> Sessions { get; set; }
+
+    public DbSet<Participant> Participants { get; set; }
     
     public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
     {

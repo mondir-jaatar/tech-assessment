@@ -1,7 +1,7 @@
 using StackExchange.Redis;
 using WeChooz.TechAssessment.Application.Interfaces;
 
-namespace WeChooz.TechAssessment.Persistence.Shared;
+namespace WeChooz.TechAssessment.Shared;
 
 public class RedisLockService(IConnectionMultiplexer connectionMultiplexer) : IRedisLockService
 {

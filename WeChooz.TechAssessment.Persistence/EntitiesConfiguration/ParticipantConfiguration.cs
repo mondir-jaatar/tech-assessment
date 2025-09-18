@@ -10,7 +10,7 @@ public class ParticipantConfiguration: IEntityTypeConfiguration<Participant>
     {
         //Session
         builder.HasOne(p => p.Session)
-            .WithMany()
+            .WithMany(s => s.Participants)
             .HasForeignKey(p => p.SessionId);
     }
 }

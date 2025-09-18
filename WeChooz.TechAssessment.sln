@@ -25,7 +25,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WeChooz.TechAssessment.Pers
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastructure", "{54B054C4-B640-410D-9549-FEBAF2E8C23B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WeChooz.TechAssessment.Persistence.Shared", "WeChooz.TechAssessment.Persistence.Shared\WeChooz.TechAssessment.Persistence.Shared.csproj", "{678725CD-9D04-47E8-B604-D46AB0B258AC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WeChooz.TechAssessment.Shared", "WeChooz.TechAssessment.Shared\WeChooz.TechAssessment.Shared.csproj", "{678725CD-9D04-47E8-B604-D46AB0B258AC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

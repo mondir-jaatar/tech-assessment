@@ -12,8 +12,8 @@ using WeChooz.TechAssessment.Persistence;
 namespace WeChooz.TechAssessment.Persistence.Migrations
 {
     [DbContext(typeof(CourseDbContext))]
-    [Migration("20250915194050_Initial")]
-    partial class Initial
+    [Migration("20250918201641_change_participants_table_name")]
+    partial class change_participants_table_name
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -31,10 +31,6 @@ namespace WeChooz.TechAssessment.Persistence.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier")
                         .HasDefaultValueSql("newsequentialid()");
-
-                    b.Property<string>("Audience")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("Created")
                         .HasColumnType("datetime2");
@@ -74,7 +70,11 @@ namespace WeChooz.TechAssessment.Persistence.Migrations
                         .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("rowversion");
 
-                    b.Property<Guid>("TrainerId")
+                    b.Property<string>("TargetAudience")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid?>("TrainerId")
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
@@ -83,7 +83,7 @@ namespace WeChooz.TechAssessment.Persistence.Migrations
 
                     b.HasIndex("TrainerId");
 
-                    b.ToTable("Course");
+                    b.ToTable("Courses");
                 });
 
             modelBuilder.Entity("WeChooz.TechAssessment.Domain.Entities.Participant", b =>
@@ -128,7 +128,7 @@ namespace WeChooz.TechAssessment.Persistence.Migrations
 
                     b.HasIndex("SessionId");
 
-                    b.ToTable("Participant");
+                    b.ToTable("Participants");
                 });
 
             modelBuilder.Entity("WeChooz.TechAssessment.Domain.Entities.Session", b =>
@@ -154,6 +154,9 @@ namespace WeChooz.TechAssessment.Persistence.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("DeliveryMode")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Duration")
                         .HasColumnType("int");
 
                     b.Property<bool>("IsDeleted")
@@ -233,8 +236,7 @@ namespace WeChooz.TechAssessment.Persistence.Migrations
                     b.HasOne("WeChooz.TechAssessment.Domain.Entities.Trainer", "Trainer")
                         .WithMany()
                         .HasForeignKey("TrainerId")
-                        .OnDelete(DeleteBehavior.SetNull)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.SetNull);
 
                     b.OwnsOne("WeChooz.TechAssessment.Domain.Entities.Description", "Description", b1 =>
                         {
@@ -252,7 +254,7 @@ namespace WeChooz.TechAssessment.Persistence.Migrations
 
                             b1.HasKey("CourseId");
 
-                            b1.ToTable("Course");
+                            b1.ToTable("Courses");
 
                             b1.WithOwner()
                                 .HasForeignKey("CourseId");
@@ -267,7 +269,7 @@ namespace WeChooz.TechAssessment.Persistence.Migrations
             modelBuilder.Entity("WeChooz.TechAssessment.Domain.Entities.Participant", b =>
                 {
                     b.HasOne("WeChooz.TechAssessment.Domain.Entities.Session", "Session")
-                        .WithMany()
+                        .WithMany("Participants")
                         .HasForeignKey("SessionId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -284,6 +286,11 @@ namespace WeChooz.TechAssessment.Persistence.Migrations
                         .IsRequired();
 
                     b.Navigation("Course");
+                });
+
+            modelBuilder.Entity("WeChooz.TechAssessment.Domain.Entities.Session", b =>
+                {
+                    b.Navigation("Participants");
                 });
 #pragma warning restore 612, 618
         }

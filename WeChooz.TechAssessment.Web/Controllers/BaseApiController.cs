@@ -1,7 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
-namespace WeChooz.TechAssessment.Web.API;
+namespace WeChooz.TechAssessment.Web.Controllers;
 
 [ApiController]
 // [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)] TODO

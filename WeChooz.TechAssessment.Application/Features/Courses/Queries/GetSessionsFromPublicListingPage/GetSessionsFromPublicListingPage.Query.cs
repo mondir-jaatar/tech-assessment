@@ -14,7 +14,7 @@ public class GetSessionsFromPublicListingPageQuery : IRequest<SessionsFromPublic
     public int PageSize  { get; set; }
 }
 
-public record SessionsFromPublicListingPageDto
+public record SessionFromPublicListingPageDto
 {
     public Guid Id { get; set; }
     public DateTime StartDate { get; set; }
@@ -28,7 +28,6 @@ public record SessionsFromPublicListingPageDto
 
 public class CourseFromPublicListingPageDto
 {
-    public Guid Id { get; set; }
     public string Name { get; set; }
     public CourseDescriptionFromPublicListingPageDto Description { get; set; }
     public TargetAudience TargetAudience { get; set; }
@@ -48,10 +47,10 @@ public class TrainerFromPublicListingPageDto
     public string LastName { get; set; }
 }
 
-public class SessionsFromPublicListingPageViewModel : PagedResponse<ICollection<SessionsFromPublicListingPageDto>>
+public class SessionsFromPublicListingPageViewModel : PagedResponse<ICollection<SessionFromPublicListingPageDto>>
 {
     public int Count { get; set; }
-    public SessionsFromPublicListingPageViewModel(ICollection<SessionsFromPublicListingPageDto> data, int pageNumber, int pageSize, int count) : base(data, pageNumber, pageSize)
+    public SessionsFromPublicListingPageViewModel(ICollection<SessionFromPublicListingPageDto> data, int pageNumber, int pageSize, int count) : base(data, pageNumber, pageSize)
     {
         Count = count;
     }

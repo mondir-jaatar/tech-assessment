@@ -1,6 +1,7 @@
 ﻿using FluentValidation;
 using MediatR;
 using Microsoft.Extensions.Logging;
+using ValidationException = WeChooz.TechAssessment.Application.Exceptions.ValidationException;
 
 namespace WeChooz.TechAssessment.Application.Behaviours;
 

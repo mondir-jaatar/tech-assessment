@@ -77,21 +77,24 @@ public static class CourseDbContextExtensions
         sessions.Add(new Session
         {
             CourseId = course1.Id,
-            StartDate = new DateTime(2025, 10, 1, 9, 0, 0),
+            StartDate = new DateTime(2025, 9, 1),
+            // EndDate = new DateTime(2025, 9, 3),
             Duration = 180, // 3 hours in minutes
             DeliveryMode = DeliveryMode.Remote
         });
         sessions.Add(new Session
         {
             CourseId = course1.Id,
-            StartDate = new DateTime(2025, 10, 8, 9, 0, 0),
+            StartDate = new DateTime(2025, 9, 8),
+            // EndDate = new DateTime(2025, 9, 10),
             Duration = 180,
             DeliveryMode = DeliveryMode.OnSite
         });
         sessions.Add(new Session
         {
             CourseId = course1.Id,
-            StartDate = new DateTime(2025, 10, 15, 9, 0, 0),
+            StartDate = new DateTime(2025, 9, 15),
+            // EndDate = new DateTime(2025, 9, 19),
             Duration = 180,
             DeliveryMode = DeliveryMode.Remote
         });
@@ -100,21 +103,24 @@ public static class CourseDbContextExtensions
         sessions.Add(new Session
         {
             CourseId = course2.Id,
-            StartDate = new DateTime(2025, 11, 1, 10, 0, 0),
+            StartDate = new DateTime(2025, 9, 1),
+            // EndDate = new DateTime(2025, 9, 3),
             Duration = 120, // 2 hours in minutes
             DeliveryMode = DeliveryMode.OnSite
         });
         sessions.Add(new Session
         {
             CourseId = course2.Id,
-            StartDate = new DateTime(2025, 11, 8, 10, 0, 0),
+            StartDate = new DateTime(2025, 9, 8),
+            // EndDate = new DateTime(2025, 9, 10),
             Duration = 120,
             DeliveryMode = DeliveryMode.Remote
         });
         sessions.Add(new Session
         {
             CourseId = course2.Id,
-            StartDate = new DateTime(2025, 11, 15, 10, 0, 0),
+            StartDate = new DateTime(2025, 9, 15),
+            // EndDate = new DateTime(2025, 9, 19),
             Duration = 120,
             DeliveryMode = DeliveryMode.OnSite
         });
@@ -123,21 +129,24 @@ public static class CourseDbContextExtensions
         sessions.Add(new Session
         {
             CourseId = course3.Id,
-            StartDate = new DateTime(2025, 12, 1, 14, 0, 0),
+            StartDate = new DateTime(2025, 9, 1),
+            // EndDate = new DateTime(2025, 9, 3),
             Duration = 240, // 4 hours in minutes
             DeliveryMode = DeliveryMode.Remote
         });
         sessions.Add(new Session
         {
             CourseId = course3.Id,
-            StartDate = new DateTime(2025, 12, 8, 14, 0, 0),
+            StartDate = new DateTime(2025, 9, 8),
+            // EndDate = new DateTime(2025, 9, 10),
             Duration = 240,
             DeliveryMode = DeliveryMode.OnSite
         });
         sessions.Add(new Session
         {
             CourseId = course3.Id,
-            StartDate = new DateTime(2025, 12, 15, 14, 0, 0),
+            StartDate = new DateTime(2025, 9, 15),
+            // EndDate = new DateTime(2025, 9, 19),
             Duration = 240,
             DeliveryMode = DeliveryMode.Remote
         });
@@ -171,9 +180,9 @@ public static class CourseDbContextExtensions
                     "Take your C# development skills to the next level by learning how to apply **advanced design patterns** and **software architecture principles** in .NET.  \n\nThis course covers patterns such as **Factory**, **Observer**, **Dependency Injection**, and **Repository**, along with **SOLID principles**, **Clean Architecture**, and **microservices design**.  \n\nYou’ll gain **hands-on experience** designing **flexible**, **scalable**, and **testable applications** that adhere to **industry best practices**, preparing you for complex enterprise projects.\n"
             },
             Duration = 3,
-            TargetAudience = TargetAudience.WorksCouncilPresident,
+            TargetAudience = TargetAudience.ElectedOfficial,
             MaxParticipants = 20,
-            TrainerId = trainer1.Id
+            TrainerId = trainer2.Id
         }).Entity;
 
         var course3 = courses.Add(new Course
@@ -188,7 +197,7 @@ public static class CourseDbContextExtensions
             Duration = 14,
             TargetAudience = TargetAudience.WorksCouncilPresident,
             MaxParticipants = 50,
-            TrainerId = trainer1.Id
+            TrainerId = trainer3.Id
         }).Entity;
 
         return (course1, course2, course3);

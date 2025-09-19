@@ -80,7 +80,7 @@ export default defineConfig(async () => {
             rollupOptions: {
                 input: {
                     index: path.resolve(__dirname, "ClientApp", "src", "index.tsx"),
-                    admin: path.resolve(__dirname, "ClientApp", "src", "admin", "index.tsx"),
+                    admin: path.resolve(__dirname, "ClientApp", "src", "pages", "admin", "index.tsx")
                 },
                 output: {
                     // Save entry files to the appropriate folder

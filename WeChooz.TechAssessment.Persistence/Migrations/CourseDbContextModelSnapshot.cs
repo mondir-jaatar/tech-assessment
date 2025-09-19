@@ -80,7 +80,7 @@ namespace WeChooz.TechAssessment.Persistence.Migrations
 
                     b.HasIndex("TrainerId");
 
-                    b.ToTable("Courses");
+                    b.ToTable("Courses", (string)null);
                 });
 
             modelBuilder.Entity("WeChooz.TechAssessment.Domain.Entities.Participant", b =>
@@ -125,7 +125,7 @@ namespace WeChooz.TechAssessment.Persistence.Migrations
 
                     b.HasIndex("SessionId");
 
-                    b.ToTable("Participants");
+                    b.ToTable("Participants", (string)null);
                 });
 
             modelBuilder.Entity("WeChooz.TechAssessment.Domain.Entities.Session", b =>
@@ -180,7 +180,7 @@ namespace WeChooz.TechAssessment.Persistence.Migrations
 
                     b.HasIndex("IsDeleted");
 
-                    b.ToTable("Sessions");
+                    b.ToTable("Sessions", (string)null);
                 });
 
             modelBuilder.Entity("WeChooz.TechAssessment.Domain.Entities.Trainer", b =>
@@ -225,7 +225,7 @@ namespace WeChooz.TechAssessment.Persistence.Migrations
 
                     b.HasIndex("IsDeleted");
 
-                    b.ToTable("Trainers");
+                    b.ToTable("Trainers", (string)null);
                 });
 
             modelBuilder.Entity("WeChooz.TechAssessment.Domain.Entities.Course", b =>
@@ -251,7 +251,7 @@ namespace WeChooz.TechAssessment.Persistence.Migrations
 
                             b1.HasKey("CourseId");
 
-                            b1.ToTable("Courses");
+                            b1.ToTable("Courses", (string)null);
 
                             b1.WithOwner()
                                 .HasForeignKey("CourseId");

@@ -33,29 +33,33 @@ public class GetSessionsFromPublicListingPageCriteriaSpecification : Specificati
 
         if (endDate.HasValue)
         {
-            Query.Where(s => s.StartDate.AddDays(s.Course.Duration) <= endDate.Value);
+            Query.Where(s => s.StartDate <= endDate.Value);
         }
     }
 }
 
 public static class GetSessionsFromPublicListingPageCriteriaSpecificationExtensions
 {
-    public static Specification<Session, SessionsFromPublicListingPageDto> Project(this GetSessionsFromPublicListingPageCriteriaSpecification spec, int pageNumber, int pageSize)
+    public static Specification<Session, SessionFromPublicListingPageDto> Project(this GetSessionsFromPublicListingPageCriteriaSpecification spec, int pageNumber, int pageSize)
     {
-        var projectSpec = new GetSessionsFromPublicListingPageProjectSpecification(pageNumber, pageSize);
-        spec.WithProjectionOf(projectSpec);
+        var projectSpec = new GetSessionsFromPublicListingPageProjectSpecification();
+        var mergedSpec = spec.WithProjectionOf(projectSpec);
+        
+        mergedSpec.Query
+            .Skip((pageNumber - 1) * pageSize)
+            .Take(pageSize);
 
-        return projectSpec;
+        return mergedSpec;
     }
 }
 
-public class GetSessionsFromPublicListingPageProjectSpecification : Specification<Session, SessionsFromPublicListingPageDto>
+public class GetSessionsFromPublicListingPageProjectSpecification : Specification<Session, SessionFromPublicListingPageDto>
 {
-    public GetSessionsFromPublicListingPageProjectSpecification(int pageNumber, int pageSize)
+    public GetSessionsFromPublicListingPageProjectSpecification()
     {
         Query.Include(s => s.Course.Trainer);
 
-        Query.Select(s => new SessionsFromPublicListingPageDto
+        Query.Select(s => new SessionFromPublicListingPageDto
         {
             Id = s.Id,
             StartDate = s.StartDate,
@@ -63,7 +67,6 @@ public class GetSessionsFromPublicListingPageProjectSpecification : Specificatio
             DeliveryMode = s.DeliveryMode,
             Course = new()
             {
-                Id = s.Course.Id,
                 Name = s.Course.Name,
                 TargetAudience = s.Course.TargetAudience,
                 Description = new()
@@ -80,8 +83,5 @@ public class GetSessionsFromPublicListingPageProjectSpecification : Specificatio
                 LastName = s.Course.Trainer.LastName,
             },
         });
-
-        Query.Skip((pageNumber - 1) * pageSize)
-            .Take(pageSize);
     }
 }

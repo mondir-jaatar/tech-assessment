@@ -37,21 +37,20 @@
     </ItemGroup>
 
     <ItemGroup>
+        <Folder Include="ClientApp\api\auth\queries\" />
         <Folder Include="ClientApp\api\session\commands\" />
         <Folder Include="ClientApp\src\public\" />
         <Folder Include="wwwroot\"/>
     </ItemGroup>
 
     <ItemGroup>
-        <TypeScriptCompile Include="ClientApp\src\admin\index.tsx">
-            <SubType>Code</SubType>
-        </TypeScriptCompile>
-    </ItemGroup>
-
-    <ItemGroup>
         <Reference Include="MediatR">
             <HintPath>..\..\..\.nuget\packages\mediatr\13.0.0\lib\net9.0\MediatR.dll</HintPath>
         </Reference>
+    </ItemGroup>
+
+    <ItemGroup>
+      <AdditionalFiles Include="Authentication\_Views\Handle.cshtml" />
     </ItemGroup>
 
 </Project>

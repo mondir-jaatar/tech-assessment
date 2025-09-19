@@ -13,7 +13,7 @@ public class GetSessionsFromPublicListingPageHandler(ISessionRepositoryAsync ses
         var count = await sessionRepository.CountAsync(filterSpecification, cancellationToken);
         var sessions = await sessionRepository.GetBySpecificationAsync(projectSpecification, cancellationToken);
         
-        // Calculating RemainingSeats to eliminate 1 count subquery, a better idea is to calculate save RemainingSeats when session is saved, TODO for later (maybe)
+        // Calculating RemainingSeats to eliminate 1 count subquery, a better idea is to calculate and save RemainingSeats when session is saved, TODO for later (maybe)
         sessions = sessions.Select(s => s with { RemainingSeats = s.Course.MaxParticipants - s.NumberOfParticipants }).ToList();
 
         return new(sessions,request.PageNumber, request.PageSize, count);

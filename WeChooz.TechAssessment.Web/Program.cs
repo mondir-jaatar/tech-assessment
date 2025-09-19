@@ -7,6 +7,7 @@ using WeChooz.TechAssessment.Persistence;
 using WeChooz.TechAssessment.Persistence.Seeds;
 using WeChooz.TechAssessment.Shared;
 using WeChooz.TechAssessment.Web;
+using WeChooz.TechAssessment.Web.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -62,15 +63,10 @@ if (!app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
-// app.Use(async (context, next) =>
-// {
-//     // Set the Content-Security-Policy header
-//     context.Response.Headers.Add("Content-Security-Policy", "script-src 'self' https://localhost:5180 'unsafe-inline';");    await next();
-// });
-
 app.UseRouting();
 app.UseCors(WeChooz.TechAssessment.Web.ServiceExtensions.AllowSpecificOrigins);
 app.UseAntiforgery();
+app.UseMiddleware<ErrorHandlerMiddleware>();
 app.MapStaticAssets();
 app.MapControllers();
 app.MapDefaultEndpoints();

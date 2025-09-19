@@ -1,18 +1,33 @@
 import {
     Text, Card, Group, Badge, Button, SegmentedControl, Container, rem, SimpleGrid,
-    Paper
+    Paper, Center, Loader, Pagination, Modal, Tooltip, ActionIcon, Flex
 } from "@mantine/core";
-import {IconCalendar, IconClock, IconHome, IconMapPin, IconUser, IconUsers} from "@tabler/icons-react";
+import {IconCalendar, IconClock, IconHome, IconInfoCircle, IconMapPin, IconUser, IconUsers} from "@tabler/icons-react";
 import {DatePickerInput} from "@mantine/dates";
 import {useEffect, useState} from "react";
 import {SessionService} from "../../api/session/session-service.tsx";
-import {GetSessionsFromPublicListingPageViewModelResponse} from "../../api/session/queries/get-sessions-from-public-listing-page-query.tsx";
+import {CourseFromPublicListingPageDto, GetSessionsFromPublicListingPageQuery, GetSessionsFromPublicListingPageViewModelResponse, SessionFromPublicListingPageDto} from "../../api/session/queries/get-sessions-from-public-listing-page-query.tsx";
+import {useQuery} from "@tanstack/react-query";
+import {DeliveryMode} from "../../api/enums/delivery-mode.tsx";
+import {TargetAudience} from "../../api/enums/target-audience.tsx";
+import ReactMarkdown from "react-markdown";
+import {ValidationErrorAsKeyValue} from "../../api/utilities/model/ValidationErrorAsKeyValue.tsx";
 
 
 const PublicPage = () => {
     const [targetAudience, setTargetAudience] = useState('all');
     const [deliveryMode, setDeliveryMode] = useState('all');
-    const [startDate, setStartDate] = useState(undefined);
+    const [startDate, setStartDate] = useState<Date | undefined>();
+    const [endDate, setEndDate] = useState<Date | undefined>();
+    const [pageNumber, setPageNumber] = useState(1);
+    const [pageSize, setPageSize] = useState(9);
+    const [opened, setOpened] = useState(false);
+    const [selectedCourse, setSelectedCourse] = useState<CourseFromPublicListingPageDto | null>(null);
+    const [query, setQuery] = useState<GetSessionsFromPublicListingPageQuery>({
+        PageNumber: pageNumber,
+        PageSize: pageSize,
+    });
+
     const getDeliveryMode = (value: string) => {
         switch (value) {
             case 'Remote':
@@ -35,170 +50,228 @@ const PublicPage = () => {
         }
     }
 
-    const sessions = [
-        {
-            name: "Introduction à React",
-            description: "Apprenez les bases de React et construisez votre première application web moderne.",
-            targetAudience: "Débutants",
-            startDate: "2025-10-20",
-            duration: "3 jours",
-            deliveryMode: "Présentiel",
-            remainingSeats: 5,
-            trainer: "Jane Doe"
-        },
-        {
-            name: "Maîtriser Node.js",
-            description: "Plongez dans le monde du développement back-end avec Node.js et Express.",
-            targetAudience: "Intermédiaires",
-            startDate: "2025-11-05",
-            duration: "5 jours",
-            deliveryMode: "À distance",
-            remainingSeats: 2,
-            trainer: "John Smith"
-        },
-        {
-            name: "Développement Mantine UI",
-            description: "Apprenez à construire des interfaces utilisateur élégantes et réactives avec Mantine.",
-            targetAudience: "Débutants",
-            startDate: "2025-11-15",
-            duration: "2 jours",
-            deliveryMode: "À distance",
-            remainingSeats: 10,
-            trainer: "Alex Johnson"
-        },
-        {
-            name: "Bases de données SQL",
-            description: "Comprenez les concepts fondamentaux des bases de données relationnelles et du langage SQL.",
-            targetAudience: "Tous niveaux",
-            startDate: "2025-12-01",
-            duration: "4 jours",
-            deliveryMode: "Présentiel",
-            remainingSeats: 0, // Session complète
-            trainer: "Sarah Miller"
-        }
-    ];
-
-    useEffect(() => {
-        SessionService.GetFromPublicListingPage({
-            DeliveryMode: getDeliveryMode(deliveryMode),
-            TargetAudience:getTargetAudience(targetAudience),
-            PageNumber:1,
-            PageSize: 100,
-            StartDate: startDate,
-            EndDate: startDate
-        })
-            .then((res: GetSessionsFromPublicListingPageViewModelResponse) => {
-                // if (res.succeeded) {
-                //     setResponse(res);
-                // } else {
-                //     toast.error(t('common.toasterMessages.errors.default'));
-                // }
-                console.log(res);
-            });
-    }, []);
-
-    const cardItems = sessions.map((session, index) => {
-        const isFull = session.remainingSeats === 0;
-        const deliveryIcon = session.deliveryMode === 'Présentiel' ?
-            <IconMapPin style={{width: rem(16), height: rem(16)}}/> :
-            <IconHome style={{width: rem(16), height: rem(16)}}/>;
-
-        return (
-            <Card key={index} shadow="sm" padding="lg" radius="md" withBorder miw={400}>
-                <Group justify="space-between" mb="xs">
-                    <Text fw={500} size="lg">{session.name}</Text>
-                    <Badge color={isFull ? 'red' : 'green'} variant="light">
-                        {isFull ? 'Complet' : `${session.remainingSeats} places restantes`}
-                    </Badge>
-                </Group>
-
-                <Text size="sm" c="dimmed" lineClamp={3}>
-                    {session.description}
-                </Text>
-
-                <Group mt="md" gap="sm" wrap="nowrap">
-                    <Badge variant="light" leftSection={<IconUsers style={{width: rem(14), height: rem(14)}}/>}>
-                        {session.targetAudience}
-                    </Badge>
-                    <Badge variant="light" leftSection={deliveryIcon}>
-                        {session.deliveryMode}
-                    </Badge>
-                </Group>
-
-                <Group mt="sm" gap="sm" wrap="nowrap">
-                    <Badge variant="outline" leftSection={<IconCalendar style={{width: rem(14), height: rem(14)}}/>}>
-                        {session.startDate}
-                    </Badge>
-                    <Badge variant="outline" leftSection={<IconClock style={{width: rem(14), height: rem(14)}}/>}>
-                        {session.duration}
-                    </Badge>
-                    <Badge variant="outline" leftSection={<IconUser style={{width: rem(14), height: rem(14)}}/>}>
-                        {session.trainer}
-                    </Badge>
-                </Group>
-            </Card>
-        );
+    const {data, isLoading, isError, error} = useQuery({
+        queryKey: ["publicListingPage", query],
+        queryFn: () => SessionService.GetFromPublicListingPage(query)
     });
 
     const handleFilter = () => {
-
+        setQuery((prev) => ({
+            ...prev,
+            PageNumber: 1,
+            PageSize: pageSize,
+            StartDate: startDate,
+            EndDate: endDate,
+            TargetAudience: getTargetAudience(targetAudience),
+            DeliveryMode: getDeliveryMode(deliveryMode),
+        }));
     };
 
+    const handlePageChange = (page: number) => {
+        setPageNumber(page);
+        setQuery((prev) => ({
+            ...prev,
+            PageNumber: page,
+            PageSize: pageSize,
+        }));
+    };
+
+    const openModal = (description: any) => {
+        setSelectedCourse(description);
+        setOpened(true);
+    };
+
+    const closeModal = () => {
+        setOpened(false);
+        setSelectedCourse(null);
+    };
+
+    const SessionsList = () => {
+        if (isError || !data?.data) {
+            return <></>;
+        }
+
+        return data?.data.map((session: SessionFromPublicListingPageDto, index: number) => {
+            const isFull = session.remainingSeats === 0;
+            const deliveryIcon = session.deliveryMode == DeliveryMode.OnSite ?
+                <IconMapPin style={{width: rem(16), height: rem(16)}}/> :
+                <IconHome style={{width: rem(16), height: rem(16)}}/>;
+            const formatDuration = (minutes: number): string => {
+                if (minutes < 60) {
+                    `${minutes} min`;
+                }
+                const hours = Math.floor(minutes / 60);
+                const remainingMinutes = minutes % 60;
+                return remainingMinutes > 0
+                    ? `${hours}h ${remainingMinutes}min`
+                    : `${hours}h`;
+            }
+
+            return (
+                <Card key={index} shadow="sm" padding="lg" radius="md" withBorder miw={400}>
+                    <Group justify="space-between" align="center" mb="xs">
+                        <Flex align="center" gap="5px">
+                            <Text fw={500} size="lg" display="inline">
+                                {session.course.name}
+                            </Text>
+
+                            <Tooltip label="Voir les détails">
+                                <ActionIcon
+                                    size="sm"
+                                    variant="subtle"
+                                    onClick={() => openModal(session.course)}
+                                >
+                                    <IconInfoCircle size={16}/>
+                                </ActionIcon>
+                            </Tooltip>
+                        </Flex>
+
+                        <Badge color={isFull ? 'red' : 'green'} variant="light">
+                            {isFull ? 'Complet' : `${session.remainingSeats} places restantes`}
+                        </Badge>
+                    </Group>
+
+                    <Text size="sm" c="dimmed" lineClamp={3}>
+                        {session.course.description.short}
+                    </Text>
+
+                    <Group mt="md" gap="sm" wrap="nowrap">
+                        <Badge variant="light" leftSection={<IconUsers style={{width: rem(14), height: rem(14)}}/>}>
+                            {session.course.targetAudience == TargetAudience.ElectedOfficial ? "Élu" : "Président de CS"}
+                        </Badge>
+                        <Badge variant="light" leftSection={deliveryIcon}>
+                            {session.deliveryMode === DeliveryMode.OnSite ? "Présentiel" : "À distance"}
+                        </Badge>
+                    </Group>
+
+                    <Group mt="sm" gap="sm" wrap="nowrap">
+                        <Badge variant="outline" leftSection={<IconCalendar style={{width: rem(14), height: rem(14)}}/>}>
+                            {new Date(session.startDate).toLocaleDateString("fr-FR")}
+                        </Badge>
+                        <Badge variant="outline" leftSection={<IconClock style={{width: rem(14), height: rem(14)}}/>}>
+                            {formatDuration(session.duration)}
+                        </Badge>
+                        <Badge variant="outline" leftSection={<IconUser style={{width: rem(14), height: rem(14)}}/>}>
+                            {session.trainer.firstName} {session.trainer.lastName.toUpperCase()}
+                        </Badge>
+                    </Group>
+                </Card>
+            );
+        });
+    }
+
+    const getValidationMessage = (field: string): string | undefined => {
+        if (!data || !data.IsValidationError || !data.Data)
+        {
+            return undefined;
+        }
+
+        const error = data.Data.find((e: ValidationErrorAsKeyValue) => e.Property === field);
+        return error?.Message;
+    }
+
     return (
-        <Container size="xl" py="xl">
-            <Text fw={700} fz="xl" ta="center" mb={10}>Sessions de Formation</Text>
+        <>
+            <Modal
+                opened={opened}
+                onClose={closeModal}
+                title={selectedCourse?.name}
+                size="lg"
+            >
+                <ReactMarkdown>
+                    {selectedCourse?.description?.long || "Aucune description disponible."}
+                </ReactMarkdown>
+            </Modal>
 
-            <Paper shadow="sm" radius="md" p="md" mb="xl">
-                <Group justify="space-between" align="center" gap="lg">
-                    <Group gap="xs" style={{flexWrap: 'nowrap'}}>
-                        <Text size="sm" c="dimmed">
-                            Cible:
-                        </Text>
-                        <SegmentedControl
-                            data={[
-                                {label: 'Tous', value: 'all'},
-                                {label: 'Élu', value: 'ElectedOfficial'},
-                                {label: 'Président de CSE', value: 'WorksCouncilPresident'},
-                            ]}
-                            defaultValue="all"
-                            onChange={setTargetAudience}
-                        />
+            <Container size="xl" py="xl">
+                <Text fw={700} fz="xl" ta="center" mb={10}>Sessions de Formation</Text>
+
+                <Paper shadow="sm" radius="md" p="md" mb="xs">
+                    <Group justify="space-between" align="center" gap="lg">
+                        <Group gap="xs" style={{flexWrap: 'nowrap'}}>
+                            <Text size="sm" c="dimmed">
+                                Cible:
+                            </Text>
+                            <SegmentedControl
+                                data={[
+                                    {label: 'Tous', value: 'all'},
+                                    {label: 'Élu', value: 'ElectedOfficial'},
+                                    {label: 'Président de CSE', value: 'WorksCouncilPresident'},
+                                ]}
+                                defaultValue="all"
+                                onChange={setTargetAudience}
+                            />
+                        </Group>
+
+                        <Group gap="xs" style={{flexWrap: 'nowrap'}}>
+                            <Text size="sm" c="dimmed">
+                                Mode:
+                            </Text>
+                            <SegmentedControl
+                                data={[
+                                    {label: 'Tous', value: 'all'},
+                                    {label: 'Présentiel', value: 'OnSite'},
+                                    {label: 'À distance', value: 'Remote'},
+                                ]}
+                                defaultValue="all"
+                                onChange={setDeliveryMode}
+                            />
+                        </Group>
+
+                        <Group gap="xs">
+                            <Text size="sm" c="dimmed">
+                                De:
+                            </Text>
+                            <DatePickerInput
+                                placeholder="Sélectionnez une date"
+                                clearable
+                                onChange={(value) => setStartDate(value ? new Date(value) : undefined)}
+                                error={getValidationMessage("startDate")}
+                            />
+                        </Group>
+
+                        <Group gap="xs">
+                            <Text size="sm" c="dimmed">
+                                à:
+                            </Text>
+                            <DatePickerInput
+                                placeholder="Sélectionnez une date"
+                                clearable
+                                onChange={(value) => setEndDate(value ? new Date(value) : undefined)}
+                                error={getValidationMessage("endDate")}
+                            />
+                        </Group>
+
+                        <Button variant="filled" onClick={handleFilter}>Filtrer</Button>
                     </Group>
+                </Paper>
 
-                    <Group gap="xs" style={{flexWrap: 'nowrap'}}>
-                        <Text size="sm" c="dimmed">
-                            Mode:
-                        </Text>
-                        <SegmentedControl
-                            data={[
-                                {label: 'Tous', value: 'all'},
-                                {label: 'Présentiel', value: 'OnSite'},
-                                {label: 'À distance', value: 'Remote'},
-                            ]}
-                            defaultValue="all"
-                            onChange={setDeliveryMode}
-                        />
-                    </Group>
+                <Text fw={700} fz="md" ta="left" mb="xs">{data?.count ?? 0} sessions trouvé</Text>
 
-                    <Group gap="xs">
-                        <Text size="sm" c="dimmed">
-                            Date:
-                        </Text>
-                        <DatePickerInput
-                            placeholder="Sélectionnez une date"
-                            clearable
-                            onClick={handleFilter}
-                        />
-                    </Group>
+                {
+                    isLoading ?
+                        <Center py="xl">
+                            <Loader size="lg" variant="dots"/>
+                        </Center>
+                        :
+                        (
+                            <>
+                                <SimpleGrid cols={{base: 1, sm: 2, lg: 3}} spacing="md">
+                                    <SessionsList/>
+                                </SimpleGrid>
 
-                    <Button variant="filled">Filtrer</Button>
-                </Group>
-            </Paper>
-
-            <SimpleGrid cols={{base: 1, sm: 2, lg: 3}} spacing="md">
-                {cardItems}
-            </SimpleGrid>
-        </Container>
+                                <Center mt="xl">
+                                    <Pagination
+                                        total={data?.count / pageSize}
+                                        value={pageNumber}
+                                        onChange={handlePageChange}
+                                    />
+                                </Center>
+                            </>
+                        )
+                }
+            </Container>
+        </>
     );
 }
 

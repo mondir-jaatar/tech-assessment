@@ -7,27 +7,30 @@ import '@mantine/core/styles.css';
 import '@mantine/dates/styles.css';
 import Header from "./components/Header.tsx";
 import Footer from "./components/Footer.tsx";
+import {AuthProvider} from "./context/auth-context.tsx";
 
 const App = ({children}: { children: ReactNode }) => {
     return (
         <MantineProvider theme={theme}>
-            <QueryClientProvider client={queryClient}>
-                <AppShell
-                    header={{height: 60}}
-                    footer={{height: 60}}
-                    padding="md"
-                >
-                    <AppShell.Header>
-                        <Header/>
-                    </AppShell.Header>
-                    <AppShell.Main>
-                        {children}
-                    </AppShell.Main>
-                    <AppShell.Footer>
-                        <Footer/>
-                    </AppShell.Footer>
-                </AppShell>
-            </QueryClientProvider>
+            <AuthProvider>
+                <QueryClientProvider client={queryClient}>
+                    <AppShell
+                        header={{height: 60}}
+                        footer={{height: 60}}
+                        padding="md"
+                    >
+                        <AppShell.Header>
+                            <Header/>
+                        </AppShell.Header>
+                        <AppShell.Main>
+                            {children}
+                        </AppShell.Main>
+                        <AppShell.Footer>
+                            <Footer/>
+                        </AppShell.Footer>
+                    </AppShell>
+                </QueryClientProvider>
+            </AuthProvider>
         </MantineProvider>
     );
 };

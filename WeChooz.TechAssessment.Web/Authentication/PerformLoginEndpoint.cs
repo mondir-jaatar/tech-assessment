@@ -15,12 +15,17 @@ public class PerformLoginEndpoint : Ardalis.ApiEndpoints.EndpointBaseAsync.WithR
         {
             return BadRequest("Login cannot be empty.");
         }
-        if (request.Login == "formation" || request.Login == "sales")
+        
+        if (request.Login is "formation" or "sales")
         {
-            var principal = new ClaimsPrincipal([new ClaimsIdentity([new Claim(ClaimTypes.Role, request.Login), new Claim(ClaimTypes.Name, request.Login)])]);
+            var identity = new ClaimsIdentity([new Claim(ClaimTypes.Role, request.Login), new Claim(ClaimTypes.Name, request.Login)], "Cookies");
+            var principal = new ClaimsPrincipal(identity);
+            
             await HttpContext.SignInAsync(principal);
-            return Ok(principal.Claims);
+            
+            return Ok(principal.Claims.ToDtos());
         }
+        
         return Unauthorized();
     }
 }

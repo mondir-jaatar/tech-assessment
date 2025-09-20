@@ -25,7 +25,18 @@ builder.Services.Configure<RazorViewEngineOptions>(options =>
 builder.Services.AddAuthentication("Cookies")
     .AddCookie("Cookies", options =>
     {
+        options.LoginPath = "/authentication"; // for browser
         options.Cookie.Name = "AspireAuthCookie";
+        options.Events.OnRedirectToLogin = context =>
+        {
+            if (context.Request.Path.StartsWithSegments("/api"))
+            {
+                context.Response.StatusCode = StatusCodes.Status401Unauthorized;
+                return Task.CompletedTask;
+            }
+            context.Response.Redirect(context.RedirectUri);
+            return Task.CompletedTask;
+        };
     });
 builder.Services.AddAuthorization(options =>
 {
@@ -64,6 +75,8 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+app.UseAuthentication();
+app.UseAuthorization();   
 app.UseCors(WeChooz.TechAssessment.Web.ServiceExtensions.AllowSpecificOrigins);
 app.UseAntiforgery();
 app.UseMiddleware<ErrorHandlerMiddleware>();

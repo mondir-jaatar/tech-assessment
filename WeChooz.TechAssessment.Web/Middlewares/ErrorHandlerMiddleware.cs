@@ -1,6 +1,5 @@
 ﻿using System.Net;
 using System.Text.Json;
-using TCLab.BuildingBlocks.Application.Wrappers;
 using WeChooz.TechAssessment.Application.Exceptions;
 using WeChooz.TechAssessment.Application.Wrappers;
 

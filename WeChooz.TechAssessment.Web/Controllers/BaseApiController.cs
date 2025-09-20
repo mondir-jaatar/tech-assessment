@@ -1,10 +1,11 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WeChooz.TechAssessment.Web.Controllers;
 
 [ApiController]
-// [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)] TODO
+[Authorize(AuthenticationSchemes = "Cookies")]
 [Route("api/v{version:apiVersion}/[controller]")]
 public abstract class BaseApiController : ControllerBase
 {

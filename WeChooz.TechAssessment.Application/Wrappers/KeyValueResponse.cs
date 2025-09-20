@@ -1,6 +1,4 @@
-﻿using TCLab.BuildingBlocks.Application.Wrappers;
-
-namespace WeChooz.TechAssessment.Application.Wrappers;
+﻿namespace WeChooz.TechAssessment.Application.Wrappers;
 
 public class KeyValueResponse<T> : Response<T>
 {

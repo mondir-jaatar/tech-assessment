@@ -26,7 +26,7 @@ public record SessionFromPublicListingPageDto
     public int NumberOfParticipants { get; set; }
 }
 
-public class CourseFromPublicListingPageDto
+public record CourseFromPublicListingPageDto
 {
     public string Name { get; set; }
     public CourseDescriptionFromPublicListingPageDto Description { get; set; }
@@ -34,13 +34,13 @@ public class CourseFromPublicListingPageDto
     public int MaxParticipants { get; set; }
 }
 
-public class CourseDescriptionFromPublicListingPageDto
+public record CourseDescriptionFromPublicListingPageDto
 {
     public string Short { get; set; }
     public string Long { get; set; }
 }
 
-public class TrainerFromPublicListingPageDto
+public record TrainerFromPublicListingPageDto
 {
     public string FirstName { get; set; }
     

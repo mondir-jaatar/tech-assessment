@@ -37,7 +37,6 @@
     </ItemGroup>
 
     <ItemGroup>
-        <Folder Include="ClientApp\api\auth\queries\" />
         <Folder Include="ClientApp\api\session\commands\" />
         <Folder Include="ClientApp\src\public\" />
         <Folder Include="wwwroot\"/>

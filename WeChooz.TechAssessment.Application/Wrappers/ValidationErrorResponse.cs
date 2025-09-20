@@ -1,5 +1,4 @@
-﻿using TCLab.BuildingBlocks.Application.Wrappers;
-using WeChooz.TechAssessment.Application.Exceptions;
+﻿using WeChooz.TechAssessment.Application.Exceptions;
 
 namespace WeChooz.TechAssessment.Application.Wrappers;
 

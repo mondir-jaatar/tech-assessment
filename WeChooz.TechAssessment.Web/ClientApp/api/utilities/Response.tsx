@@ -1,6 +1,7 @@
 import { PagedResponse } from './model/Response';
 
 export function handleResponse(response: any) {
+    console.log(response);
   if (response.data.succeeded != undefined) {
     return response.data;
   } else {

@@ -13,6 +13,7 @@ export interface SessionFromAdminListingPageDto {
     remainingSeats: number;
     trainer: TrainerFromAdminListingPageDto;
     numberOfParticipants: number;
+    rowVersion: string;
 }
 
 export interface CourseFromAdminListingPageDto {

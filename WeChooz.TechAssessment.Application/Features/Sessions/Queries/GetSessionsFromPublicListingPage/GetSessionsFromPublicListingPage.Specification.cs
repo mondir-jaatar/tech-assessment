@@ -2,7 +2,7 @@ using Ardalis.Specification;
 using WeChooz.TechAssessment.Domain.Entities;
 using WeChooz.TechAssessment.Domain.Enums;
 
-namespace WeChooz.TechAssessment.Application.Features.Courses.Queries.GetSessionsFromPublicListingPage;
+namespace WeChooz.TechAssessment.Application.Features.Sessions.Queries.GetSessionsFromPublicListingPage;
 
 public class GetSessionsFromPublicListingPageCriteriaSpecification : Specification<Session>
 {

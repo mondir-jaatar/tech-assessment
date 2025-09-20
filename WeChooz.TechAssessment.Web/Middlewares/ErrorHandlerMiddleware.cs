@@ -1,5 +1,6 @@
 ﻿using System.Net;
 using System.Text.Json;
+using Microsoft.EntityFrameworkCore;
 using WeChooz.TechAssessment.Application.Exceptions;
 using WeChooz.TechAssessment.Application.Wrappers;
 
@@ -17,7 +18,11 @@ public class ErrorHandlerMiddleware(RequestDelegate next, ILogger<ErrorHandlerMi
         {
             var response = context.Response;
             response.ContentType = "application/json";
-            var responseModel = new Response<string> { Succeeded = false, Message = $"{error.Message}{Environment.NewLine}{error.InnerException?.Message}" };
+            var responseModel = new Response<string>
+            {
+                Succeeded = false,
+                Message = $"{error.Message}{Environment.NewLine}{error.InnerException?.Message}"
+            };
 
             switch (error)
             {
@@ -45,6 +50,10 @@ public class ErrorHandlerMiddleware(RequestDelegate next, ILogger<ErrorHandlerMi
                     // not found error
                     response.StatusCode = (int)HttpStatusCode.NotFound;
                     logger.LogInformation(e, e.Message);
+                    break;
+                case DbUpdateConcurrencyException:
+                    response.StatusCode = (int)HttpStatusCode.BadRequest;
+                    responseModel.IsConcurrencyError = true;
                     break;
                 default:
                     // unhandled error

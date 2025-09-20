@@ -2,7 +2,7 @@ using MediatR;
 using WeChooz.TechAssessment.Application.Wrappers;
 using WeChooz.TechAssessment.Domain.Enums;
 
-namespace WeChooz.TechAssessment.Application.Features.Courses.Queries.GetSessionsFromPublicListingPage;
+namespace WeChooz.TechAssessment.Application.Features.Sessions.Queries.GetSessionsFromPublicListingPage;
 
 public class GetSessionsFromPublicListingPageQuery : IRequest<SessionsFromPublicListingPageViewModel>
 {

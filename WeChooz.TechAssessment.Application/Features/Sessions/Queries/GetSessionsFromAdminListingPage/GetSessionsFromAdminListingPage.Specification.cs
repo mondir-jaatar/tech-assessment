@@ -1,7 +1,7 @@
 using Ardalis.Specification;
 using WeChooz.TechAssessment.Domain.Entities;
 
-namespace WeChooz.TechAssessment.Application.Features.Courses.Queries.GetSessionsFromAdminListingPage;
+namespace WeChooz.TechAssessment.Application.Features.Sessions.Queries.GetSessionsFromAdminListingPage;
 
 public class GetSessionsFromAdminListingPageSpecification: Specification<Session, SessionFromAdminListingPageDto>
 {
@@ -16,6 +16,7 @@ public class GetSessionsFromAdminListingPageSpecification: Specification<Session
             StartDate = s.StartDate,
             Duration = s.Duration,
             DeliveryMode = s.DeliveryMode,
+            RowVersion = s.RowVersion,
             Course = new()
             {
                 Id = s.Course.Id,

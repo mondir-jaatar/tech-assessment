@@ -7,8 +7,6 @@ public class Session : SolftDeletableBaseEntityWithId, IVersionedEntity
 {
     public required DateTime StartDate { get; set; }
 
-    // public required DateTime EndDate { get; set; }
-    
     public required DeliveryMode DeliveryMode { get; set; }
 
     public required int Duration { get; set; }
@@ -17,7 +15,7 @@ public class Session : SolftDeletableBaseEntityWithId, IVersionedEntity
 
     public required Guid CourseId { get; set; }
 
-    public virtual ICollection<Participant> Participants { get; set; }
+    public virtual List<Participant> Participants { get; set; }
     
     public byte[] RowVersion { get; set; }
 }

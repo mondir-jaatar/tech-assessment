@@ -1,6 +1,6 @@
 using FluentValidation;
 
-namespace WeChooz.TechAssessment.Application.Features.Courses.Queries.GetSessionsFromPublicListingPage;
+namespace WeChooz.TechAssessment.Application.Features.Sessions.Queries.GetSessionsFromPublicListingPage;
 
 public class GetSessionsFromPublicListingPageValidator : AbstractValidator<GetSessionsFromPublicListingPageQuery>
 {

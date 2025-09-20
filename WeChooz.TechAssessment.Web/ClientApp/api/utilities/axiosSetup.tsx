@@ -1,4 +1,5 @@
 import axios from 'axios';
+import {notifications} from "@mantine/notifications";
 
 const tenantAxios = axios.create({
     baseURL: import.meta.env.VITE_API_BACK_END_URL
@@ -14,6 +15,13 @@ privateAxios.interceptors.response.use(
     error => {
         if (error.response?.status === 401) {
             window.location.href = "/authentication";
+        }
+        else if (error.response?.status === 405) {
+            notifications.show({
+                message: "Vous n’êtes pas autorisé à faire cette opération",
+                color: 'red',
+                autoClose: 5000,
+            });
         }
         return Promise.reject(error);
     }

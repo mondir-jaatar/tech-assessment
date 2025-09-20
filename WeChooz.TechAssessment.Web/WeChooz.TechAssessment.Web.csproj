@@ -37,7 +37,8 @@
     </ItemGroup>
 
     <ItemGroup>
-        <Folder Include="ClientApp\api\session\commands\" />
+        <Folder Include="ClientApp\api\course\commands\" />
+        <Folder Include="ClientApp\src\pages\admin\course\hooks\" />
         <Folder Include="ClientApp\src\public\" />
         <Folder Include="wwwroot\"/>
     </ItemGroup>

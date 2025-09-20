@@ -58,6 +58,12 @@ public class GenericRepositoryAsync<TEntity> : IGenericRepositoryAsync<TEntity> 
         return await query.ToListAsync(cancellationToken);
     }
     
+    public async Task<TEntity> FirstOrDefaultAsync(ISpecification<TEntity> specification, CancellationToken cancellationToken = default)
+    {
+        var query = SpecificationEvaluator.Default.GetQuery(_dbContext.Set<TEntity>().AsQueryable(), specification);
+        return await query.FirstOrDefaultAsync(cancellationToken);
+    }
+    
     public async Task<int> CountAsync(ISpecification<TEntity> spec, CancellationToken cancellationToken = default)
     {
         var query = SpecificationEvaluator.Default.GetQuery(_dbContext.Set<TEntity>().AsQueryable(), spec);

@@ -1,7 +1,7 @@
 using MediatR;
 using WeChooz.TechAssessment.Application.Interfaces.Repositories;
 
-namespace WeChooz.TechAssessment.Application.Features.Courses.Queries.GetSessionsFromPublicListingPage;
+namespace WeChooz.TechAssessment.Application.Features.Sessions.Queries.GetSessionsFromPublicListingPage;
 
 public class GetSessionsFromPublicListingPageHandler(ISessionRepositoryAsync sessionRepository) : IRequestHandler<GetSessionsFromPublicListingPageQuery, SessionsFromPublicListingPageViewModel>
 {

@@ -2,6 +2,7 @@ import {tenantAxios, privateAxios} from '../utilities/axiosSetup';
 import {handleError, handleResponse} from "../utilities/Response.tsx";
 import {GetSessionsFromPublicListingPageQuery} from "./queries/get-sessions-from-public-listing-page-query.tsx";
 import {GetSessionsFromAdminListingPageQuery} from "./queries/get-sessions-from-admin-listing-page-query.tsx";
+import {UpdateSessionCommand} from "./commands/update-session-command.tsx";
 
 const BACK_END_URL = 'api/v1/Session';
 
@@ -16,6 +17,12 @@ export class SessionService {
     public static GetFromAdminListingPage = (query: GetSessionsFromAdminListingPageQuery) => {
         return privateAxios
             .get(`${BACK_END_URL}/get-from-admin-listing-page`, { params: query })
+            .then(handleResponse)
+            .catch(handleError);
+    };
+
+    public static Update = (command: UpdateSessionCommand) => {
+        return privateAxios.put(BACK_END_URL, command)
             .then(handleResponse)
             .catch(handleError);
     };

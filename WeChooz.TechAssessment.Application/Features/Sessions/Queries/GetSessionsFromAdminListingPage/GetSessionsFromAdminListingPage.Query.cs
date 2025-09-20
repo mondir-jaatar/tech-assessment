@@ -1,9 +1,8 @@
 using MediatR;
-using WeChooz.TechAssessment.Application.Features.Courses.Queries.GetSessionsFromPublicListingPage;
 using WeChooz.TechAssessment.Application.Wrappers;
 using WeChooz.TechAssessment.Domain.Enums;
 
-namespace WeChooz.TechAssessment.Application.Features.Courses.Queries.GetSessionsFromAdminListingPage;
+namespace WeChooz.TechAssessment.Application.Features.Sessions.Queries.GetSessionsFromAdminListingPage;
 
 public class GetSessionsFromAdminListingPageQuery : IRequest<Response<IEnumerable<SessionFromAdminListingPageDto>>>
 {
@@ -16,8 +15,8 @@ public record SessionFromAdminListingPageDto
     public CourseFromAdminListingPageDto Course { get; set; }
     public DeliveryMode DeliveryMode { get; set; }
     public int Duration { get; set; }
-    public int RemainingSeats { get; set; }
     public TrainerFromAdminListingPageDto Trainer { get; set; }
+    public byte[] RowVersion { get; set; }
 }
 
 public record CourseFromAdminListingPageDto

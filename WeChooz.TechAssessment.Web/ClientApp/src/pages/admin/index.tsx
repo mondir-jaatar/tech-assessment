@@ -1,8 +1,8 @@
 ﻿import ReactDOM, {Container} from "react-dom/client";
 import App from "../../App";
 import {Routes, Route, Navigate, BrowserRouter} from "react-router-dom";
-import CoursesAdminPage from "./CoursesAdminPage.tsx";
-import SessionsAdminPage from "./SessionsAdminPage.tsx";
+import CoursesAdminPage from "./course/CoursesAdminPage.tsx";
+import SessionsAdminPage from "./session/SessionsAdminPage.tsx";
 
 const root = ReactDOM.createRoot(document.getElementById("react-app") as Container);
 root.render(<App>

@@ -2,7 +2,7 @@ using MediatR;
 using WeChooz.TechAssessment.Application.Interfaces.Repositories;
 using WeChooz.TechAssessment.Application.Wrappers;
 
-namespace WeChooz.TechAssessment.Application.Features.Courses.Queries.GetSessionsFromAdminListingPage;
+namespace WeChooz.TechAssessment.Application.Features.Sessions.Queries.GetSessionsFromAdminListingPage;
 
 public class GetSessionsFromAdminListingPageHandler(ISessionRepositoryAsync sessionRepository) : IRequestHandler<GetSessionsFromAdminListingPageQuery, Response<IEnumerable<SessionFromAdminListingPageDto>>>
 {

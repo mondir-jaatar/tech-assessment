@@ -8,6 +8,7 @@
 
     <ItemGroup>
       <Folder Include="Features\Courses\Commands\" />
+      <Folder Include="Features\Sessions\Commands\CreateSessionCommand\" />
     </ItemGroup>
 
     <ItemGroup>

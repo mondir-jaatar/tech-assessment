@@ -46,6 +46,7 @@ builder.Services.AddAuthorization(options =>
 
     options.AddPolicy("Formation", policy => policy.Combine(defaultPolicy).RequireRole("formation"));
     options.AddPolicy("Sales", policy => policy.Combine(defaultPolicy).RequireRole("sales"));
+    options.AddPolicy("FormationOrSales", policy => policy.Combine(defaultPolicy).RequireAssertion(context => context.User.IsInRole("formation") || context.User.IsInRole("sales")));
 });
 
 

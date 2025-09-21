@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WeChooz.TechAssessment.Application.Features.Sessions.Commands.UpdateParticipantsCommand;
 using WeChooz.TechAssessment.Application.Features.Sessions.Commands.UpdateSessionCommand;
+using WeChooz.TechAssessment.Application.Features.Sessions.Queries.GetSessionParticipants;
 using WeChooz.TechAssessment.Application.Features.Sessions.Queries.GetSessionsFromAdminListingPage;
 using WeChooz.TechAssessment.Application.Features.Sessions.Queries.GetSessionsFromPublicListingPage;
 
@@ -20,10 +21,13 @@ public class SessionController : BaseApiController
 
     [Authorize(Policy = "Formation")]
     [HttpPut]
-    public async Task<IActionResult> Put(UpdateSessionCommand query) => Ok(await Mediator.Send(query));
+    public async Task<IActionResult> PutAsync(UpdateSessionCommand query) => Ok(await Mediator.Send(query));
 
-    [Authorize(Policy = "Formation")]
-    [Authorize(Policy = "Sales")]
+    [Authorize(Policy = "FormationOrSales")]
     [HttpPut("participants")]
-    public async Task<IActionResult> UpdateParticipants([FromBody] UpdateParticipantsCommand command) => Ok(await Mediator.Send(command));
+    public async Task<IActionResult> UpdateParticipantsAsync([FromBody] UpdateParticipantsCommand command) => Ok(await Mediator.Send(command));
+    
+    [Authorize(Policy = "FormationOrSales")]
+    [HttpGet("get-participants-from-session-admin-page")]
+    public async Task<IActionResult> GetParticipantsFromSessionAdminPageAsync([FromQuery] GetSessionParticipantsFromAdminPageQuery fromAdminPageQuery) => Ok(await Mediator.Send(fromAdminPageQuery));
 }

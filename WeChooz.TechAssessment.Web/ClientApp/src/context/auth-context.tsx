@@ -8,8 +8,9 @@ type AuthContextType = {
 };
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
+export const RoleKey = "http://schemas.microsoft.com/ws/2008/06/identity/claims/role";
 
-export function AuthProvider({ children }: { children: ReactNode }) {
+export function AuthProvider({children}: { children: ReactNode }) {
     const [claims, setClaimsState] = useState<Claim[] | null>(null);
 
     useEffect(() => {
@@ -38,7 +39,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     };
 
     return (
-        <AuthContext.Provider value={{ claims, setClaims, logout }}>
+        <AuthContext.Provider value={{claims, setClaims, logout}}>
             {children}
         </AuthContext.Provider>
     );
@@ -49,5 +50,26 @@ export function useAuth() {
     if (!context) {
         throw new Error("useAuth must be used within AuthProvider");
     }
-    return context;
+
+    const hasClaim = (type: string, value?: string) => {
+        if (!context.claims) {
+            return false;
+        }
+
+        return context.claims.some(
+            (c) => c.type === type && (value ? c.value === value : true)
+        );
+    };
+
+    const hasRole = (roles?: string[]) => {
+        if (!context.claims || !roles || roles.length === 0) {
+            return false;
+        }
+
+        return context.claims.some(
+            (c) => c.type === RoleKey && roles.includes(c.value)
+        );
+    };
+
+    return {...context, hasClaim, hasRole};
 }

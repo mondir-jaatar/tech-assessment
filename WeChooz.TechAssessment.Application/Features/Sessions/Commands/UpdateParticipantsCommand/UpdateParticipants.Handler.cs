@@ -5,11 +5,11 @@ using WeChooz.TechAssessment.Domain.Entities;
 
 namespace WeChooz.TechAssessment.Application.Features.Sessions.Commands.UpdateParticipantsCommand;
 
-public class UpdateParticipantsCommandHandler(ISessionRepositoryAsync sessionRepository) : IRequestHandler<UpdateParticipantsCommand, Response<IEnumerable<Guid>>>
+public class UpdateParticipantsHandler(ISessionRepositoryAsync sessionRepository, IGenericRepositoryAsync<Participant> participantRepository) : IRequestHandler<UpdateParticipantsCommand, Response<IEnumerable<Guid>>>
 {
     public async Task<Response<IEnumerable<Guid>>> Handle(UpdateParticipantsCommand request, CancellationToken cancellationToken)
     {
-        var specification = new UpdateParticipantsCommandSpecification(request.SessionId);
+        var specification = new UpdateParticipantsSpecification(request.SessionId);
         var session = await sessionRepository.FirstOrDefaultAsync(specification, cancellationToken);
         var existingParticipants = session.Participants;
         
@@ -20,6 +20,8 @@ public class UpdateParticipantsCommandHandler(ISessionRepositoryAsync sessionRep
         AddNewParticipants(request, existingParticipants, session);
 
         sessionRepository.Update(session);
+        
+        await sessionRepository.SaveChangesAsync(cancellationToken);
 
         var allIds = session.Participants.Select(p => p.Id);
         return new(allIds);
@@ -48,7 +50,7 @@ public class UpdateParticipantsCommandHandler(ISessionRepositoryAsync sessionRep
         }
     }
 
-    private static void DeleteRemovedParticipants(UpdateParticipantsCommand request, ICollection<Participant> existingParticipants, Session session)
+    private void DeleteRemovedParticipants(UpdateParticipantsCommand request, ICollection<Participant> existingParticipants, Session session)
     {
         var participantsToDelete = existingParticipants
             .Where(ep => request.Participants.All(rp => rp.Id != ep.Id))
@@ -57,6 +59,7 @@ public class UpdateParticipantsCommandHandler(ISessionRepositoryAsync sessionRep
         foreach (var participant in participantsToDelete)
         {
             session.Participants.Remove(participant);
+            participantRepository.Delete(participant);
         }
     }
 }

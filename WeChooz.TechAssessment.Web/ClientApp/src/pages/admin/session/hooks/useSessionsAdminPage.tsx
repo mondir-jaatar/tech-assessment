@@ -29,5 +29,5 @@ export const useSessionsAdminPage = () => {
         }
     });
 
-    return { ...sessionsQuery, updateSessionMutation };
+    return { sessionsQuery, updateSessionMutation };
 };

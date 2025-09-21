@@ -1,14 +1,18 @@
 import {ActionIcon, Container, ScrollArea, Table, Tooltip} from "@mantine/core";
 import {SessionFromAdminListingPageDto} from "../../../../../api/session/queries/get-sessions-from-admin-listing-page-query.tsx";
 import {DeliveryMode} from "../../../../../api/enums/delivery-mode.tsx";
-import {IconEdit} from "@tabler/icons-react";
+import {IconEdit, IconUserEdit} from "@tabler/icons-react";
+import {RoleKey, useAuth} from "../../../../context/auth-context.tsx";
 
 interface AdminSessionsTableProps {
     sessions: SessionFromAdminListingPageDto[];
     onEdit: (session: SessionFromAdminListingPageDto) => void;
+    onEditParticipants: (sessionId: string) => void;
 }
 
-const AdminSessionsTable = ({sessions, onEdit}: AdminSessionsTableProps) => {
+const AdminSessionsTable = ({sessions, onEdit, onEditParticipants}: AdminSessionsTableProps) => {
+    const { hasRole } = useAuth();
+    
     const rows = sessions.map((session) => (
         <Table.Tr key={session.id}>
             <Table.Td>{session.course.name}</Table.Td>
@@ -25,11 +29,20 @@ const AdminSessionsTable = ({sessions, onEdit}: AdminSessionsTableProps) => {
                     : `${session.duration} min`}
             </Table.Td>
             <Table.Td>
-                <Tooltip label="Editer la session">
-                    <ActionIcon color="blue" variant="light" onClick={() => onEdit(session)}>
-                        <IconEdit size={16}/>
-                    </ActionIcon>
-                </Tooltip>
+                {
+                    hasRole(["formation"]) && <Tooltip label="Editer la session">
+                        <ActionIcon mr={10} color="blue" variant="light" onClick={() => onEdit(session)}>
+                            <IconEdit size={16}/>
+                        </ActionIcon>
+                    </Tooltip>
+                }
+                {
+                    hasRole(["formation", "sales"]) && <Tooltip label="Editer les participants">
+                        <ActionIcon color="blue" variant="light" onClick={() => onEditParticipants(session.id)}>
+                            <IconUserEdit size={16}/>
+                        </ActionIcon>
+                    </Tooltip>
+                }
             </Table.Td>
         </Table.Tr>
     ));

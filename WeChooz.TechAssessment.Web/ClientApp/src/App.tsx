@@ -9,14 +9,14 @@ import '@mantine/notifications/styles.css';
 import Header from "./components/Header.tsx";
 import Footer from "./components/Footer.tsx";
 import {AuthProvider} from "./context/auth-context.tsx";
-import { Notifications } from '@mantine/notifications';
+import {Notifications} from '@mantine/notifications';
 
 const App = ({children}: { children: ReactNode }) => {
     return (
         <MantineProvider theme={theme}>
             <AuthProvider>
                 <QueryClientProvider client={queryClient}>
-                    <Notifications position="top-right" />
+                    <Notifications position="top-right"/>
                     <AppShell
                         header={{height: 60}}
                         footer={{height: 60}}

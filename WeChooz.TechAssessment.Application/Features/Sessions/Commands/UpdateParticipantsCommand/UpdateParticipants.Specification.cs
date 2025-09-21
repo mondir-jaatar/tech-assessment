@@ -3,9 +3,9 @@ using WeChooz.TechAssessment.Domain.Entities;
 
 namespace WeChooz.TechAssessment.Application.Features.Sessions.Commands.UpdateParticipantsCommand;
 
-public class UpdateParticipantsCommandSpecification : Specification<Session>, ISingleResultSpecification<Session>
+public class UpdateParticipantsSpecification : Specification<Session>, ISingleResultSpecification<Session>
 {
-    public UpdateParticipantsCommandSpecification(Guid sessionId)
+    public UpdateParticipantsSpecification(Guid sessionId)
     {
         Query.AsNoTracking();
         

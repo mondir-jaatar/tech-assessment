@@ -11,7 +11,7 @@ public class UpdateParticipantsCommand : IRequest<Response<IEnumerable<Guid>>>
 
 public record UpdateParticipantDto
 {
-    public Guid Id { get; set; }
+    public Guid? Id { get; set; }
     
     public string FirstName { get; set; }
     
